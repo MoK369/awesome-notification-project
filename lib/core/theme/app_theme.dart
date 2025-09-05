@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 abstract class AppTheme {
   static final ThemeData lightTheme = ThemeData(
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.teal,
       foregroundColor: Colors.white
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        padding: EdgeInsets.symmetric(horizontal: 18,vertical: 4)
+        padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 4)
       )
     ),
-    colorScheme: ColorScheme(
+    colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Colors.teal,
       onPrimary: Colors.white,

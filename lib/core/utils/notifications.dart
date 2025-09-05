@@ -37,6 +37,7 @@ abstract class Notifications {
         title: title,
         body: body,
         notificationLayout: notificationLayout,
+        locked: true,
       ),
       actionButtons: [
         NotificationActionButton(

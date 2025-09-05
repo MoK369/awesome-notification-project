@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awsome_notification_project/core/constants/notification_constants.dart';
 import 'package:awsome_notification_project/main.dart';
-import 'package:awsome_notification_project/notification_page.dart';
+import 'package:awsome_notification_project/ui/notification_page.dart';
 import 'package:flutter/material.dart';
 
 abstract class NotificationStreamMethods {
@@ -12,7 +12,7 @@ abstract class NotificationStreamMethods {
     ReceivedNotification receivedNotification,
   ) async {
     // Handle notification creation
-    print("Notification Created: ${receivedNotification.id}");
+    debugPrint("Notification Created: ${receivedNotification.id}");
   }
 
   @pragma("vm:entry-point")
@@ -20,7 +20,7 @@ abstract class NotificationStreamMethods {
     ReceivedNotification receivedNotification,
   ) async {
     // Handle notification display
-    print("Notification Displayed: ${receivedNotification.id}");
+    debugPrint("Notification Displayed: ${receivedNotification.id}");
   }
 
   @pragma("vm:entry-point")
@@ -28,7 +28,7 @@ abstract class NotificationStreamMethods {
     ReceivedAction receivedAction,
   ) async {
     // Handle notification dismissal
-    print("Notification Dismissed: ${receivedAction.id}");
+    debugPrint("Notification Dismissed: ${receivedAction.id}");
   }
 
   @pragma("vm:entry-point")
@@ -42,7 +42,7 @@ abstract class NotificationStreamMethods {
       });
     }
     // Handle notification tap or button press
-    print("Notification Action Received: ${receivedAction.buttonKeyPressed}");
+    debugPrint("Notification Action Received: ${receivedAction.buttonKeyPressed}");
     // Example navigation
     MyApp.navigatorKey.currentState?.push(
       MaterialPageRoute(

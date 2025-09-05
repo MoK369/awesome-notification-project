@@ -2,9 +2,10 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awsome_notification_project/core/utils/notification_stream_methods.dart';
 import 'package:awsome_notification_project/core/utils/notifications.dart';
 import 'package:awsome_notification_project/core/utils/schedule_dialog.dart';
+import 'package:awsome_notification_project/ui/scheduled_notifications/scheduled_notifications.dart';
 import 'package:flutter/material.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(
+                    child: const Text(
                       "Don't Allow",
                       style: TextStyle(color: Colors.grey, fontSize: 18),
                     ),
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       awesomeNotifications
                           .requestPermissionToSendNotifications();
                     },
-                    child: Text(
+                    child: const Text(
                       "Allow",
                       style: TextStyle(
                         color: Colors.teal,
@@ -89,11 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Awesome Notification"),
+        title: const Text("Awesome Notification"),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.insert_chart_outlined, size: 30),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ScheduledNotifications(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.insert_chart_outlined, size: 30),
           ),
         ],
       ),
@@ -118,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       picturePath: "asset://assets/images/on_the_map.jpg",
                     );
                   },
-                  child: Text("\$Plant Food"),
+                  child: const Text("\$Plant Food"),
                 ),
                 FilledButton(
                   onPressed: () async {
@@ -126,21 +133,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                     );
                     if (result?.timeOfDay == null ||
-                        result?.dayOfTheWeek == null)
+                        result?.dayOfTheWeek == null) {
                       return;
+                    }
                     Notifications.createScheduledNotification(
                       notificationSchedule: result!,
                       title: "${Emojis.wheater_droplet} water your plant",
                       body: "Water your plant regularly to keep it healthy",
                     );
                   },
-                  child: Text("💧Water"),
+                  child: const Text("💧Water"),
                 ),
                 FilledButton(
                   onPressed: () {
                     Notifications.cancelScheduledNotifications();
                   },
-                  child: Text("❌cancel"),
+                  child: const Text("❌cancel"),
                 ),
               ],
             ),

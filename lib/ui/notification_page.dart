@@ -8,7 +8,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Notification Page")),
+      appBar: AppBar(title: const Text("Notification Page")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -16,16 +16,16 @@ class NotificationPage extends StatelessWidget {
           children: [
             Text(
               "----- ${receivedNotification.title} -----",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12,),
             Text(
               "${receivedNotification.body}",
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Text(
               "${receivedNotification.channelKey}",
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),

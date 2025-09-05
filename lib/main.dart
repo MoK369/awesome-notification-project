@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awsome_notification_project/core/constants/notification_constants.dart';
 import 'package:awsome_notification_project/core/theme/app_theme.dart';
-import 'package:awsome_notification_project/home_screen.dart';
+import 'package:awsome_notification_project/ui/home_screen.dart';
 import 'package:flutter/material.dart';
 
 AwesomeNotifications awesomeNotifications = AwesomeNotifications();
