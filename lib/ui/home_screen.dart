@@ -129,6 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 FilledButton(
                   onPressed: () async {
+                    var previousScheduledNotifications =
+                        await awesomeNotifications.listScheduledNotifications();
+                    if (!context.mounted) return;
+                    if (previousScheduledNotifications.length >= 5) {
+                      await ScheduleDialog.showMaximumScheduledNotificationDialog(context);
+                      return;
+                    }
                     var result = await ScheduleDialog.showScheduleDialog(
                       context,
                     );

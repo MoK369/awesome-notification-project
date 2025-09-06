@@ -24,7 +24,7 @@ void main() async {
           locked: true,
           channelDescription: "This channel is for scheduled notifications",
           importance: NotificationImportance.High,
-          soundSource: "resource://raw/livechat_sound"
+          soundSource: "resource://raw/notification_sound"
         ),
       ]);
   runApp(const MyApp());

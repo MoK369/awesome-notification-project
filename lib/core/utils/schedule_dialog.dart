@@ -17,15 +17,18 @@ abstract class ScheduleDialog {
             spacing: 4.0,
             runSpacing: 8.0,
             alignment: WrapAlignment.center,
-            children: List.generate(NotificationConstants.daysOfTheWeek.length, (index) {
-              return FilledButton(
-                onPressed: () {
-                  selectedDay = index + 1;
-                  Navigator.pop(context);
-                },
-                child: Text(NotificationConstants.daysOfTheWeek[index]),
-              );
-            }),
+            children: List.generate(
+              NotificationConstants.daysOfTheWeek.length,
+              (index) {
+                return FilledButton(
+                  onPressed: () {
+                    selectedDay = index + 1;
+                    Navigator.pop(context);
+                  },
+                  child: Text(NotificationConstants.daysOfTheWeek[index]),
+                );
+              },
+            ),
           ),
         );
       },
@@ -39,6 +42,31 @@ abstract class ScheduleDialog {
     return NotificationWeekAndTime(
       timeOfDay: timeOfDay,
       dayOfTheWeek: selectedDay,
+    );
+  }
+
+  static Future<void> showMaximumScheduledNotificationDialog(
+    BuildContext context,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("5 Scheduled Notifications Limit 🔔",style: TextStyle(fontSize: 20,color: Colors.teal),textAlign: TextAlign.center,),
+          content: const Text(
+            "You have reached your maximum number of scheduled notifications, pleased wait until one of the notifications is consumed or delete one",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

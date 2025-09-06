@@ -8,7 +8,8 @@ class ScheduledNotificationViewModel extends ChangeNotifier {
   BaseViewState<List<NotificationModel>> getScheduledNotificationResult =
       IdleState();
 
-  BaseViewState<void> cancelScheduledNotificationStatus = IdleState();
+  CancelScheduledNotificationData cancelScheduledNotificationData =
+      CancelScheduledNotificationData(status: IdleState());
 
   void getScheduledNotifications() async {
     try {
@@ -27,18 +28,32 @@ class ScheduledNotificationViewModel extends ChangeNotifier {
 
   void deleteScheduledNotification(int notificationId) async {
     try {
-      cancelScheduledNotificationStatus = LoadingState(
-        message: "$notificationId",
-      );
+      cancelScheduledNotificationData.id = notificationId;
+      cancelScheduledNotificationData.status = LoadingState();
       notifyListeners();
       await awesomeNotifications.cancel(notificationId);
-      cancelScheduledNotificationStatus = SuccessState(data: null);
+      cancelScheduledNotificationData.status = SuccessState(data: null);
     } catch (e) {
-      cancelScheduledNotificationStatus = ErrorState(error: e);
+      cancelScheduledNotificationData.status = ErrorState(error: e);
     }
     notifyListeners();
-    Future.delayed(const Duration(seconds: 2), () {
-      cancelScheduledNotificationStatus = IdleState();
-    });
+
+    _scheduledNotifications.removeAt(
+      _scheduledNotifications.indexWhere(
+        (element) => element.content!.id == cancelScheduledNotificationData.id,
+      ),
+    );
+    getScheduledNotificationResult = SuccessState<List<NotificationModel>>(
+      data: _scheduledNotifications,
+    );
+    notifyListeners();
+    cancelScheduledNotificationData.id = null;
+    cancelScheduledNotificationData.status = IdleState();
   }
+}
+
+class CancelScheduledNotificationData {
+  int? id;
+  BaseViewState<void> status;
+  CancelScheduledNotificationData({this.id, required this.status});
 }

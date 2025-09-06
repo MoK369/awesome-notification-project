@@ -94,10 +94,32 @@ class _ScheduledNotificationsState extends State<ScheduledNotifications> {
                                   ),
                                   Selector<
                                     ScheduledNotificationViewModel,
-                                    BaseViewState<void>
+                                    CancelScheduledNotificationData
                                   >(
+                                    selector: (context, viewModel) => viewModel
+                                        .cancelScheduledNotificationData,
                                     builder: (context, value, child) {
-                                      switch (value) {
+                                      if (value.id != null &&
+                                          value.id !=
+                                              notifications[index]
+                                                  .content!
+                                                  .id) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            viewModel
+                                                .deleteScheduledNotification(
+                                                  notifications[index]
+                                                      .content!
+                                                      .id!,
+                                                );
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                      switch (value.status) {
                                         case IdleState<void>():
                                           return IconButton(
                                             onPressed: () {
@@ -114,19 +136,13 @@ class _ScheduledNotificationsState extends State<ScheduledNotifications> {
                                             ),
                                           );
                                         case LoadingState<void>():
-                                          return const CircularProgressIndicator();
                                         case SuccessState<void>():
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback((
-                                                timeStamp,
-                                              ) {
-                                                viewModel
-                                                    .getScheduledNotifications();
-                                              });
-                                          return const SizedBox();
+                                          return const CircularProgressIndicator();
                                         case ErrorState<void>():
                                           String error =
-                                              (viewModel.cancelScheduledNotificationStatus
+                                              (viewModel
+                                                          .cancelScheduledNotificationData
+                                                          .status
                                                       as ErrorState<
                                                         List<NotificationModel>
                                                       >)
@@ -142,8 +158,6 @@ class _ScheduledNotificationsState extends State<ScheduledNotifications> {
                                           return const SizedBox();
                                       }
                                     },
-                                    selector: (context, viewModel) => viewModel
-                                        .cancelScheduledNotificationStatus,
                                   ),
                                 ],
                               );
