@@ -24,7 +24,20 @@ void main() async {
           locked: true,
           channelDescription: "This channel is for scheduled notifications",
           importance: NotificationImportance.High,
-          soundSource: "resource://raw/notification_sound"
+          soundSource: "resource://raw/notification_sound",
+        ),
+
+        NotificationChannel(
+          channelKey: NotificationConstants.musicChannelKey,
+          channelName: 'Music Notifications',
+          channelDescription: 'Notification channel for music player',
+          defaultColor: Colors.teal,
+          ledColor: Colors.black,
+          importance: NotificationImportance.High,
+          channelShowBadge: false,
+          locked: true,
+          enableVibration: false,
+          playSound: false,
         ),
       ]);
   runApp(const MyApp());

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:awsome_notification_project/core/constants/notification_constants.dart';
 import 'package:awsome_notification_project/core/utils/notification_stream_methods.dart';
 import 'package:awsome_notification_project/core/utils/notifications.dart';
 import 'package:awsome_notification_project/core/utils/schedule_dialog.dart';
@@ -71,15 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     awesomeNotifications.setListeners(
       onNotificationCreatedMethod: (receivedNotification) async {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "Notification created on ${receivedNotification.channelKey}",
-            ),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(
+        //       "Notification created on ${receivedNotification.channelKey}",
+        //     ),
+        //   ),
+        // );
       },
-      onActionReceivedMethod: NotificationStreamMethods.onActionReceivedMethod,
+      onActionReceivedMethod: onActionReceivedMethod,
       onNotificationDisplayedMethod:
           NotificationStreamMethods.onNotificationDisplayedMethod,
     );
@@ -118,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 FilledButton(
                   onPressed: () async {
-                    await Notifications.createNormalNotification(
+                    await AwesomeNotificationsService.createBasicNotification(
                       title:
                           "${Emojis.money_money_bag} ${Emojis.plant_cactus} Buy Plant Food",
                       body: "Florist at 123 Main St. has 2 in stock",
@@ -133,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         await awesomeNotifications.listScheduledNotifications();
                     if (!context.mounted) return;
                     if (previousScheduledNotifications.length >= 5) {
-                      await ScheduleDialog.showMaximumScheduledNotificationDialog(context);
+                      await ScheduleDialog.showMaximumScheduledNotificationDialog(
+                        context,
+                      );
                       return;
                     }
                     var result = await ScheduleDialog.showScheduleDialog(
@@ -143,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         result?.dayOfTheWeek == null) {
                       return;
                     }
-                    Notifications.createScheduledNotification(
+                    AwesomeNotificationsService.createScheduledNotification(
                       notificationSchedule: result!,
                       title: "${Emojis.wheater_droplet} water your plant",
                       body: "Water your plant regularly to keep it healthy",
@@ -152,12 +157,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const Text("💧Water"),
                 ),
                 FilledButton(
-                  onPressed: () {
-                    Notifications.cancelScheduledNotifications();
+                  onPressed: () async {
+                    await AwesomeNotificationsService.createMediaNotification(
+                      musicTitle: "Champagne Supernova",
+                    );
                   },
-                  child: const Text("❌cancel"),
+                  child: const Text("🎵Play Music"),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: () {
+                AwesomeNotificationsService.cancelScheduledNotifications();
+              },
+              child: const Text("❌cancel"),
             ),
           ],
         ),
@@ -170,4 +184,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     awesomeNotifications.dispose();
   }
+}
+
+@pragma("vm:entry-point")
+Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+  print("An action has been given ${receivedAction.buttonKeyInput}");
+  if (receivedAction.buttonKeyPressed == 'PLAY_PAUSE') {
+    print("${bool.parse(receivedAction.payload!['isPlaying']!)}");
+    await AwesomeNotificationsService.createMediaNotification(
+      musicTitle: receivedAction.payload!["title"]!,
+      isPlaying: !(bool.parse(receivedAction.payload!['isPlaying']!)),
+    );
+  }
+  if (receivedAction.channelKey == NotificationConstants.basicChannelKey &&
+      Platform.isIOS) {
+    awesomeNotifications.getGlobalBadgeCounter().then((value) {
+      awesomeNotifications.setGlobalBadgeCounter(value - 1);
+    });
+  }
+  // Handle notification tap or button press
+  debugPrint(
+    "Notification Action Received: ${receivedAction.buttonKeyPressed}",
+  );
 }

@@ -6,6 +6,8 @@ import 'package:awsome_notification_project/main.dart';
 import 'package:awsome_notification_project/ui/notification_page.dart';
 import 'package:flutter/material.dart';
 
+
+@pragma('vm:entry-point')
 abstract class NotificationStreamMethods {
   @pragma("vm:entry-point")
   static Future<void> onNotificationCreatedMethod(
@@ -35,6 +37,7 @@ abstract class NotificationStreamMethods {
   static Future<void> onActionReceivedMethod(
     ReceivedAction receivedAction,
   ) async {
+    print("An action has been given ${receivedAction.buttonKeyInput}");
     if (receivedAction.channelKey == NotificationConstants.basicChannelKey &&
         Platform.isIOS) {
       awesomeNotifications.getGlobalBadgeCounter().then((value) {
@@ -42,13 +45,15 @@ abstract class NotificationStreamMethods {
       });
     }
     // Handle notification tap or button press
-    debugPrint("Notification Action Received: ${receivedAction.buttonKeyPressed}");
-    // Example navigation
-    MyApp.navigatorKey.currentState?.push(
-      MaterialPageRoute(
-        builder: (context) =>
-            NotificationPage(receivedNotification: receivedAction),
-      ),
+    debugPrint(
+      "Notification Action Received: ${receivedAction.buttonKeyPressed}",
     );
+    // Example navigation
+    // MyApp.navigatorKey.currentState?.push(
+    //   MaterialPageRoute(
+    //     builder: (context) =>
+    //         NotificationPage(receivedNotification: receivedAction),
+    //   ),
+    // );
   }
 }
